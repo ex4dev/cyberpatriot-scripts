@@ -25,6 +25,7 @@ if [ "$delete_confirm" == "y" ] || [ "$delete_confirm" == "Y" ]; then
     done
     echo "Done."
 fi
+
 # Check for unauthorized administrators
 current_administrators=($(getent group $admin_group | cut -d : -f 4 | tr "," " "))
 users_to_demote=()
@@ -41,6 +42,20 @@ if [ "$demote_confirm" == "y" ] || [ "$demote_confirm" == "Y" ]; then
     for user in ${users_to_demote[@]}; do
         sudo gpasswd -d $user $admin_group > /dev/null
     done
-    echo "Done."
 fi
 
+# Change passwords
+echo -n "Change the password of every user to a secure one? (y/N) "
+read password_confirm
+if [ "$password_confirm" == "y" ] || [ "$password_confirm" == "Y" ]; then
+    current_users=($(cut -d: -f1,3 /etc/passwd | egrep ':[0-9]{4}$' | cut -d: -f1 | tr "\n" " "))
+    for user in ${current_users[@]}; do
+        if [ "$user" == "$USER" ]; then
+            echo "Skipping $user, the currently logged in user."
+            continue
+        fi
+        echo "Changing password of $user"
+        echo -e "^RNT*jHBntneFb%Ag4UGfB\n^RNT*jHBntneFb%Ag4UGfB" | sudo passwd $user
+    done
+fi
+echo "Done."
