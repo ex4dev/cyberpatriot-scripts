@@ -2,9 +2,9 @@
 # This script checks some important system files for permission issues and prints any problematic files.
 
 # These files should not be writable or executable by anyone except root.
-unwritable_only=("/etc/vsftpd.conf" "/etc/sudoers" "/etc/group" "/etc/passwd" "/etc/sshd_config", "/etc/hosts", "/etc/fstab")
+unwritable_only=("/etc/vsftpd.conf" "/etc/sudoers" "/etc/group" "/etc/passwd" "/etc/sshd_config" "/etc/hosts" "/etc/fstab")
 # These files should not be readable, writable, or executable by anyone except root.
-unreadable=("/etc/shadow", "/etc/shadow-", "/etc/gshadow", "/etc/gshadow-")
+unreadable=("/etc/shadow" "/etc/shadow-" "/etc/gshadow" "/etc/gshadow-")
 
 
 for file in ${unwritable_only[@]}; do

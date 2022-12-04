@@ -58,4 +58,15 @@ if [ "$password_confirm" == "y" ] || [ "$password_confirm" == "Y" ]; then
         echo -e "^RNT*jHBntneFb%Ag4UGfB\n^RNT*jHBntneFb%Ag4UGfB" | sudo passwd $user
     done
 fi
+
+# Update password policies
+echo -n "Update password policies? (y/N) "
+read policy_confirm
+if [ "$policy_confirm" == "y" ] || [ "$policy_confirm" == "Y" ]; then
+    sed -i 's/PASS_MAX_DAYS.*$/PASS_MAX_DAYS 30/;s/PASS_MIN_DAYS.*$/PASS_MIN_DAYS 10/;s/PASS_WARN_AGE.*$/PASS_WARN_AGE 7/' /etc/login.defs
+    echo 'auth required pam_tally2.so deny=5 onerr=fail unlock_time=1800' >> /etc/pam.d/common-auth
+    sudo apt install libpam-cracklib -y &&
+    sed -i 's/\(pam_unix\.so.*\)$/\1 remember=5 minlen=8/' /etc/pam.d/common-password &&
+    sed -i 's/\(pam_cracklib\.so.*\)$/\1 ucredit=-1 lcredit=-1 dcredit=-1 ocredit=-1/' /etc/pam.d/common-password
+fi
 echo "Done."

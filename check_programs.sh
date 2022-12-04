@@ -19,12 +19,13 @@ check_program "nginx"
 check_program "apache2"
 check_program "vsftpd"
 check_program "sendmail"
-check_program "openssh_server"
+check_program "openssh-server"
 check_program "samba"
 check_program "mysql*"
 check_program "postgresql"
 check_program "wordpress"
 
+# Hacking Tools
 sudo $pm remove hydra hydra-gtk aircrack-ng fcrackzip lcrack ophcrack ophcrack-cli pdfcrack pyrit rarcrack sipcrack ipras zenmap nmap wireshark wireshark-common medusa deluge rfdump
 sudo $pm autoremove -y
 
